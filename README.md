@@ -1,14 +1,32 @@
-To help KPO (Kingwood Pops Orchestra) distribute sheet music for the convenience of its members and for ease in following copyright laws.
+# KPO Music Distribution App
+    To help KPO (Kingwood Pops Orchestra) distribute sheet music for the convenience of its members and for ease in following copyright laws (i.e, removing viewing permission after performance date).
 
+---
+## Rationale
+After collecting music for a concert, scanners electronic copies to Google Drive where we control permissions for who can download music. Orhcestra members then download and print their respective parts according to their preferences (i.e, paper or tablet viewing). 
+
+Not all orchestra members, however, have a gmail account. These members often have trouble "finding" music because gmail will not give them viewing access. Currently, we send these members unprotected pdf.
+
+Additionally, interacting with Google Drive is different for every user, and dictating uniform instructions is not possible which causes confusion among orchestra members and scanning volunteers.
+
+Ideally, this app will:
+1. provide a uniform user experience where:
+    - orchestra members can access sheet music for each concern and know whether they have each required piece of music,
+    - scanners can distribute electronic copies of sheet music and control music access, and
+    - administrators can plan concert set lists and communicate with the orchestra when music is ready for access;
+2. mitigate litigation liability for KPO; and
+3. serve as a localized database of concert music selection facilitating future concert planning. 
+
+---
 ## User Groups
 - Orhcestra Members who access music
 - Scanners/Admin - might be separate groups
 - Scanners add music according to parts (e.g, Trumpet I, Trumpet II, Flute I, Flute II, etc).
 - Admins add, remove, and reassign orchestra members
 - One person can hold multiple (or all) user groups
+- Resource for implementing User groups: [Smashing Magazine](https://www.smashingmagazine.com/2020/02/django-highlights-user-models-authentication/)
 
-## Current Processes
-After recieving music from a rental company, scanners take pictures of each page and upload them to google drive where we control permissions
+---
 
 ## Requirements
 - User roles should be easily transferrable, i.e, when the appropriate board members rotate on/off the board, their priviledges can be added or removed as appropriate
@@ -23,19 +41,16 @@ After recieving music from a rental company, scanners take pictures of each page
         - what pieces have "come in" from the rental companies
 - Non programmers can manage the structure of the application within the scope of these requirements.
 
-## New Processes
-
-
-
+---
 ## Web Pages by User Role
 
-### All Users
+### **All Users**
 #### Login
 
 #### Sign Up
 - New Users must be approved by Administrators to be able to interact with the application (see [Registration](#registration))
 
-##### Registration
+##### *Registration*
 - KPO Board compiles list of members' emails
 - Once a member registers an account, their email is matched to the list, and their user role and/or orchestra section is assigned.
     - If a registrant's email does not match the member list, the application alerts admins via email
@@ -46,7 +61,7 @@ After recieving music from a rental company, scanners take pictures of each page
 - Lists User permissions, part assignments
 - Change Password
 
-### Orchestra Members
+### **Orchestra Members**
 #### View Set List
 - Songs are sorted by modified timestamp, title, or performance order.
 - Orchestra members view songs that Scanners have uploaded.
@@ -60,7 +75,7 @@ After recieving music from a rental company, scanners take pictures of each page
 - If the Member has permission to download music, a download/print button will appear.
 - If the Member has only view permission, no download/print button appears, but a message affirming read only permission appears instead.
 
-### Scanners
+### **Scanners**
 #### View Set List
 - Same as [Orchestra Members](#view-set-list)
 
@@ -71,7 +86,7 @@ After recieving music from a rental company, scanners take pictures of each page
 - List parts with previously uploaded music.
 
 
-### Administrators
+### **Administrators**
 #### View Parts
 - Displays a colored matrix showing what parts have (not) been uploaded for each song.
 - Songs in matrix link to [View Set List](#view-set-list)
@@ -83,6 +98,29 @@ After recieving music from a rental company, scanners take pictures of each page
 #### Manage Users
 - Administrators view, add, or remove Orchestra Members (organized by part), Scanners, or other Administrators
 
+---
+## Data
+Need to store:
+- Music
+    - Song Title
+    - Part name
+    - File
+    - Created timestamp
+    - Modified timestamp
+- Concert
+    - Title
+    - Performance Date
+    - Season
+        - Fall
+        - Christmas
+        - February
+        - Spring
+- Django Stores Users automatically with `django.contrib.auth`
+
+### [Tables](https://dbdiagram.io/d/643efa826b31947051d04564)
+![Entity-Relationship Diagram](./images/KPO%20Distribution.png)
+
+---
 ## Brainstorm
 - PDF expires after concert date
 - Orchestra members can select songs to print. Then, the app creates a single pdf file for members to print all pages at once.
