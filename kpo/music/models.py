@@ -1,26 +1,15 @@
 from django.db import models
 
-class Question(models.Model):
-    question_text = models.CharField(max_length=200)
-    pub_date = models.DateTimeField("date published")
-
-
-class Choice(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    choice_text = models.CharField(max_length=200)
-    votes = models.IntegerField(default=0)
-
-
-class Season(models.Model):
-    name = models.CharField(max_length=10)
-
-    def __str___(self):
-        return self.name
-
-
 class Concert(models.Model):
+
+    class Season(models.IntegerChoices):
+        FALL = 1
+        CHRISTMAS = 2
+        FEBRUARY = 3
+        SPRING = 4
+
     title = models.CharField(max_length=200)
-    season = models.ForeignKey(Season)
+    season = models.IntegerField(choices=Season.choices, )
     performance_date = models.DateTimeField("Performance Date")
 
     def __str___(self):
