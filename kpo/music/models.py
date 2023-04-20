@@ -19,7 +19,7 @@ class File(models.Model):
 
 class Part(models.Model):
     """Instrument part for a Song"""
-    name = models.CharField(max_length=20)
+    name = models.CharField("Part Name", max_length=20)
     file = models.ForeignKey(File, null=True, on_delete=models.CASCADE)
 
     def __str___(self):
