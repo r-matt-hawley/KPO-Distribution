@@ -28,7 +28,7 @@ class Part(models.Model):
 
 class Song(models.Model):
     """Single song in a Concert"""
-    title = models.CharField(max_length=200)
+    title = models.CharField("Song Title", max_length=200)
     part = models.ForeignKey(Part, null=True, on_delete=models.CASCADE)
 
     def __str___(self):
@@ -45,9 +45,9 @@ class Concert(models.Model):
         FEBRUARY = 3
         SPRING = 4
 
-    title = models.CharField(max_length=200)
+    title = models.CharField("Concert Title", max_length=200)
     season = models.IntegerField(choices=Season.choices) # Not confused with "Concert Season" like 2022-2023
-    song = models.ManyToManyField(Song, related_name="concerts")
+    song = models.ManyToManyField(Song, related_name="concerts", verbose_name="Songs")
 
     def __str___(self):
         return f"{self.title}"
