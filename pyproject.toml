@@ -1,10 +1,20 @@
-[project]
-name = "django-music-distribution"
-version = "0.0.1"
-dependencies = [
-    "django",
-]
-
 [build-system]
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "django-music-distribution"
+authors = [
+    {name = "Matt Hawley", email = "r.matt.hawley@gmail.com"},
+]
+description = "My package description"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Framework :: Django",
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "django"
+]
+dynamic = ["version"]
