@@ -126,3 +126,8 @@ Need to store:
 - Orchestra members can select songs to print. Then, the app creates a single pdf file for members to print all pages at once.
 - App flags when members download music so that admin can see which sections of the orchestra have downloaded each piece. This might help admin catch if a given section is missing music before the first rehearsal.
 - Members may view 2 or more parts or songs side by side.
+- Include roster of orchestra by section.
+- Pre-Interview: All songs are deleted after the performance date. Post-Interview, memb
+- [Python Packaging User Guide](https://packaging.python.org/en/latest/tutorials/)
+- Admin toggles `is_published` to all view permissions for music from scanners to orchestra memebers.
+- Need notes fields for Concert, Song, and Part tables.
