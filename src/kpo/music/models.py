@@ -6,14 +6,14 @@ class File(models.Model):
     # TODO: Complete tutorial on uploading pdf files
     # https://www.askpython.com/django/upload-files-to-django
     title = models.CharField(max_length = 80)
-    pdf = models.FileField(upload_to='pdfs/') 
+    pdf = models.FileField(upload_to='pdfs/', blank=True, null=True) 
 
     # TODO: Can we get the number of pages in a PDF programmatically?
     page_num = models.IntegerField("Page Number", default=1)
     created_dt = models.DateTimeField("Created Date", auto_now_add=True)
     modified_dt = models.DateTimeField("Last Modified", auto_now=True)
 
-    def __str___(self):
+    def __str__(self):
         return f"{self.title}"
 
 
@@ -22,7 +22,7 @@ class Part(models.Model):
     name = models.CharField("Part Name", max_length=20)
     file = models.ForeignKey(File, blank=True, null=True, on_delete=models.CASCADE)
 
-    def __str___(self):
+    def __str__(self):
         return f"{self.name}"
 
 
@@ -31,7 +31,7 @@ class Song(models.Model):
     title = models.CharField("Song Title", max_length=200)
     part = models.ForeignKey(Part, blank=True, null=True, on_delete=models.CASCADE)
 
-    def __str___(self):
+    def __str__(self):
         return f"{self.title}"
 
 
@@ -49,7 +49,7 @@ class Concert(models.Model):
     season = models.IntegerField(choices=Season.choices, default=Season.FALL) # Not confused with "Concert Season" like 2022-2023
     song = models.ManyToManyField(Song, related_name="concerts", verbose_name="Songs")
 
-    def __str___(self):
+    def __str__(self):
         return f"{self.title}"
 
 
