@@ -6,7 +6,7 @@ class File(models.Model):
     # TODO: Complete tutorial on uploading pdf files
     # https://www.askpython.com/django/upload-files-to-django
     title = models.CharField(max_length = 80)
-    pdf = models.FileField(upload_to='pdfs/', null=True) 
+    pdf = models.FileField(upload_to='pdfs/') 
 
     # TODO: Can we get the number of pages in a PDF programmatically?
     page_num = models.IntegerField("Page Number", default=1)
@@ -20,7 +20,7 @@ class File(models.Model):
 class Part(models.Model):
     """Instrument part for a Song"""
     name = models.CharField("Part Name", max_length=20)
-    file = models.ForeignKey(File, null=True, on_delete=models.CASCADE)
+    file = models.ForeignKey(File, blank=True, null=True, on_delete=models.CASCADE)
 
     def __str___(self):
         return f"{self.name}"
@@ -29,7 +29,7 @@ class Part(models.Model):
 class Song(models.Model):
     """Single song in a Concert"""
     title = models.CharField("Song Title", max_length=200)
-    part = models.ForeignKey(Part, null=True, on_delete=models.CASCADE)
+    part = models.ForeignKey(Part, blank=True, null=True, on_delete=models.CASCADE)
 
     def __str___(self):
         return f"{self.title}"
@@ -46,7 +46,7 @@ class Concert(models.Model):
         SPRING = 4
 
     title = models.CharField("Concert Title", max_length=200)
-    season = models.IntegerField(choices=Season.choices) # Not confused with "Concert Season" like 2022-2023
+    season = models.IntegerField(choices=Season.choices, default=Season.FALL) # Not confused with "Concert Season" like 2022-2023
     song = models.ManyToManyField(Song, related_name="concerts", verbose_name="Songs")
 
     def __str___(self):
