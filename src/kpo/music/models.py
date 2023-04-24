@@ -21,7 +21,7 @@ class Concert(models.Model):
 class Song(models.Model):
     """Single song in a Concert"""
     title = models.CharField("Song Title", max_length=200)
-    concert = models.ManyToManyField(Concert, blank=True) #, related_name="concerts")
+    concert = models.ManyToManyField(Concert, blank=True, related_name="songs")
 
     def __str__(self):
         return f"{self.title}"
