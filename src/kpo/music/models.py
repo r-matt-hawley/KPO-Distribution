@@ -30,7 +30,7 @@ class Song(models.Model):
 class Part(models.Model):
     """Instrument part for a Song"""
     name = models.CharField("Part Name", max_length=20)
-    song = models.ForeignKey(Song, blank=True, null=True, on_delete=models.CASCADE)
+    song = models.ForeignKey(Song, blank=True, null=True, related_name="parts", on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.name}"
