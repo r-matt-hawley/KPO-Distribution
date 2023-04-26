@@ -81,7 +81,9 @@ class ModelRelationshipsTest(TestCase):
         part = Part.objects.get(name="Flute 2")
         part.song=song
         part.save()
-        self.assertQuerysetEqual(song.parts.all(), Part.objects.all(), ordered=False) # type: ignore
+        self.assertQuerysetEqual(song.parts.all(), # type: ignore
+                                 Part.objects.all(), 
+                                 ordered=False) 
 
     def test_query_concert_song_part(self):
         concert = Concert.objects.get(title="Ticket to Ride")
@@ -100,6 +102,6 @@ class ModelRelationshipsTest(TestCase):
 
         # query part from concert (backward relationship)
         self.assertEqual(concert
-                         .songs.get(parts__name__contains="Flute")
+                         .songs.get(parts__name__contains="Flute") # type: ignore
                          .parts.get(), 
                          part)
