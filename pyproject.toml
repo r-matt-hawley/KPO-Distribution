@@ -23,3 +23,6 @@ dynamic = ["version"]
 dev = [
     "black",
 ]
+
+[tool.black]
+line-length = 119
