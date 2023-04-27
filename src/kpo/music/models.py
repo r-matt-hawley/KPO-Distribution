@@ -66,7 +66,8 @@ class File(models.Model):
 class Performance(models.Model):
     """Performance date for a concert"""
 
-    concert = models.ForeignKey(Concert, on_delete=models.CASCADE)
+    concert = models.ForeignKey(Concert, on_delete=models.CASCADE, 
+                                related_name="performances")
     performance_date = models.DateTimeField("Performance Date")
 
     def __str__(self):
