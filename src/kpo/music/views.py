@@ -7,6 +7,7 @@ def FileUploadView(request):
     if request.method == 'POST':
         form = FileForm(request.POST, request.FILES)
         if form.is_valid():
+            # TODO: Add automated fields here (e.g, page_num, if used)
             form.save()
             return HttpResponse('The file is saved')
     else:

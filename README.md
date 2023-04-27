@@ -131,3 +131,5 @@ Need to store:
 - [Python Packaging User Guide](https://packaging.python.org/en/latest/tutorials/)
 - Admin toggles `is_published` to all view permissions for music from scanners to orchestra memebers.
 - Need notes fields for Concert, Song, and Part tables.
+- Use [Model Manager](https://docs.djangoproject.com/en/4.2/topics/db/managers/#modifying-a-manager-s-initial-queryset) to return all songs for the upcoming concert
+- When uploading a music file, the form should automatically create the file name from the data that the Scanners provide.
