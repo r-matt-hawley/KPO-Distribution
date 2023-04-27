@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from music.forms import FileForm
 
 def FileUploadView(request):
+    context ={}
     if request.method == 'POST':
         form = FileForm(request.POST, request.FILES)
         if form.is_valid():
