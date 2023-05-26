@@ -30,9 +30,14 @@ class Song(models.Model):
 class Part(models.Model):
     """Instrument part for a Song"""
     name = models.CharField("Part Name", max_length=20)
-    song = models.ForeignKey(Song, blank=True, null=True, 
-                             related_name="parts", 
-                             on_delete=models.CASCADE)
+
+    # We need to know what songs each part has, and
+    # we need to know what parts each song has.
+    songs = models.ManyToManyField(Song, blank=True, related_name="parts")
+
+
+    class Meta:
+        ordering = ['name']
 
     def __str__(self):
         return f"{self.name}"
@@ -41,33 +46,28 @@ class Part(models.Model):
 class File(models.Model):
     """One page of a Part"""
 
-    part = models.ForeignKey(Part, blank=True, null=True, 
-                             related_name="files", 
-                             on_delete=models.CASCADE)
+    # We need to know what song and part this file is associated with
+    part = models.ForeignKey(Part, blank=True, null=True, on_delete=models.SET_NULL)
+    song = models.ForeignKey(Song, blank=True, null=True, on_delete=models.CASCADE)
 
     # TODO: Complete tutorial on uploading pdf files
     # https://www.askpython.com/django/upload-files-to-django
-    title = models.CharField(max_length = 80)
+    file_name = models.CharField(max_length = 100)
     pdf = models.FileField(upload_to='pdfs/', blank=True, null=True) 
 
-    # NOTE: These fields should be automatically filled
     # TODO: Can we get the number of pages in a PDF programmatically?
-    page_num = models.IntegerField("Page Number", default=1)
+    # page_num = models.IntegerField("Page Number", default=1)
     created_dt = models.DateTimeField("Created Date", auto_now_add=True)
     modified_dt = models.DateTimeField("Last Modified", auto_now=True)
 
-    class Meta:
-        ordering = ["title"]
-
     def __str__(self):
-        return f"{self.title}"
+        return f"{self.file_name}"
 
 
 class Performance(models.Model):
     """Performance date for a concert"""
 
-    concert = models.ForeignKey(Concert, on_delete=models.CASCADE, 
-                                related_name="performances")
+    concert = models.ForeignKey(Concert, on_delete=models.CASCADE)
     performance_date = models.DateTimeField("Performance Date")
 
     def __str__(self):

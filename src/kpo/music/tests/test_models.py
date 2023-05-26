@@ -54,7 +54,8 @@ class ModelRelationshipsTest(TestCase):
         """Create table data which will be created before any tests are run"""
         concert_fall = Concert.objects.create(title="Fall Test")
         song_top_gun = Song.objects.create(title="Top Gun")
-        part_fl_1 = Part.objects.create(name="Flute 1", song=song_top_gun)
+        part_fl_1 = Part.objects.create(name="Flute 1")
+        part_fl_1.songs.set([song_top_gun])
 
         concert_ttr = Concert.objects.create(title="Ticket to Ride", season=Concert.Season.SPRING)
         song_up = Song.objects.create(title="Music from Up")
@@ -65,12 +66,12 @@ class ModelRelationshipsTest(TestCase):
         song_tg = Song.objects.get(title="Top Gun")
         song_tg.concert.add(concert_fall)
         self.assertEqual(song_tg.concert.get(), concert_fall)
-        self.assertEqual(concert_fall.songs.get(), song_tg) # type: ignore
+        self.assertEqual(concert_fall.songs.get(), song_tg)
 
     def test_song_has_one_part(self):
         song = Song.objects.get(title="Top Gun")
         part = Part.objects.get(name="Flute 1")
-        self.assertEqual(song, part.song)
+        self.assertEqual(song, part.songs.first())
 
     def test_num_parts_is_2(self):
         num_parts = Part.objects.all().count()
@@ -79,9 +80,9 @@ class ModelRelationshipsTest(TestCase):
     def test_add_part_to_song(self):
         song = Song.objects.get(title="Top Gun")
         part = Part.objects.get(name="Flute 2")
-        part.song=song
+        part.songs.set([song])
         part.save()
-        self.assertQuerysetEqual(song.parts.all(), # type: ignore
+        self.assertQuerysetEqual(song.parts.all(),
                                  Part.objects.all(), 
                                  ordered=False) 
 
@@ -92,16 +93,18 @@ class ModelRelationshipsTest(TestCase):
 
         # Implement relationships
         song.concert.add(concert)
-        part.song=song
-        part.save()
+        song.parts.set([part])
         song.save()
 
         # query concert from part (forward relationship)
-        self.assertEqual(part.song.concert.get(), concert)
+        self.assertEqual(part
+                         .songs.get(title__contains="Up")
+                         .concert.get(), 
+                         concert)
 
 
         # query part from concert (backward relationship)
         self.assertEqual(concert
-                         .songs.get(parts__name__contains="Flute") # type: ignore
+                         .songs.get(parts__name__contains="Flute")
                          .parts.get(), 
                          part)
