@@ -18,7 +18,7 @@ def FileUploadView(request):
     return render(request, 'music/UploadFile.html', context)
 
 def Parts(request):
-    return HttpResponse("This is a parts webpage")
+    return HttpResponse("This page shows all available parts.")
 
 def PartID(request, partid):
     return HttpResponse(f"The part ID is:{partid}")

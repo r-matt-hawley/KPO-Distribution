@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "music.apps.MusicConfig",
-    "account.apps.AccountConfig"
+    "account.apps.AccountConfig",
+    "django_extensions"
 ]
 
 MIDDLEWARE = [
