@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5" style="width: 70%;">
+    <div class="col">
+        <h1 class="text-center">Song Details</h1>
+        <h2 class="text-center">{{ song.title }}</h2>
+        <h3 class="text-center">{{ concert_title }}</h3>
+        
+        <div class="d-flex justify-content-center">
+            <table class="table table-striped mt-5" style="width: 50%">
+                <thead>
+                    <tr>
+                        <th scope="col">Parts</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for part in song.parts.all  %}
+                        <tr>
+                            <!-- TODO: Add Url to part_detail page -->
+                            <td>{{ part.name }}</td>
+                        </tr>
+                    {% endfor %}
+                        
+                </tbody>
+            </table>
+        </div>
+
+        <div class="d-flex justify-content-center">
+            <a href="{% url 'music:concert_detail' pk=concert_key %}" 
+            class="d-block btn btn-primary btn-lg my-5">BACK</a>
+        </div>
+    </div>
+        
+</div>
+
+{% endblock  %}

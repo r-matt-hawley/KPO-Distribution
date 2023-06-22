@@ -1,6 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.urls import reverse, reverse_lazy
+from django.views import View
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.views.generic.list import ListView
 from music.forms import FileForm
+from music.models import Concert, Song
+
+from icecream import ic
 
 def FileUploadView(request):
     context ={}
@@ -37,3 +45,63 @@ def view_list(request):
     context = {} 
     return render(request, "music/view_list.html", context)
 
+
+class ConcertBaseView(View):
+    model = Concert
+    fields = ["title", "season"]
+    success_url = reverse_lazy("music:concert_list")
+
+class ConcertListView(ConcertBaseView, ListView):
+    """View to list all concerts.
+    Use the 'concert_list' variable in the template
+    to access all Concert objects."""
+
+class ConcertDetailView(ConcertBaseView, DetailView):
+    """View to list the details from one concert.
+    Use the 'concert' variable in the template to access
+    the specific concert here and in the Views below."""
+
+class ConcertCreateView(ConcertBaseView, CreateView):
+    """View to create a new concert."""
+
+class ConcertUpdateView(ConcertBaseView, UpdateView):
+    """View to update a concert."""
+
+class ConcertDeleteView(ConcertBaseView, DeleteView):
+    """View to delete a concert."""
+
+
+class SongBaseView(View):
+    model = Song
+    fields = ["title", "concert"]
+
+    def get_success_url(self):
+        return reverse("music:concert_detail", 
+                       kwargs={"pk":self.kwargs["pk"],
+                               "concert_pk": self.kwargs["concert_pk"]})
+
+class SongListView(SongBaseView, ListView):
+    """View to list all songs.
+    Use the 'song_list' variable in the template
+    to access all Song objects."""
+
+class SongDetailView(SongBaseView, DetailView):
+    """View to list the details from one song.
+    Use the 'song' variable in the template to access
+    the specific song here and in the Views below."""
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        concert = Concert.objects.get(id=self.kwargs["concert_pk"])
+        context["concert_key"] = concert.pk
+        context["concert_title"] = concert.title
+        return context
+
+class SongCreateView(SongBaseView, CreateView):
+    """View to create a new song."""
+
+class SongUpdateView(SongBaseView, UpdateView):
+    """View to update a song."""
+
+class SongDeleteView(SongBaseView, DeleteView):
+    """View to delete a song."""

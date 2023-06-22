@@ -4,12 +4,13 @@ from django.db import models
 class Concert(models.Model):
     """Set of Performaces for a certain set of Songs"""
 
+
     class Season(models.IntegerChoices):
-        """Choices for Concert.season"""
-        FALL = 1
-        CHRISTMAS = 2
-        FEBRUARY = 3
-        SPRING = 4
+            """Choices for Concert.season"""
+            FALL = 1
+            CHRISTMAS = 2
+            FEBRUARY = 3
+            SPRING = 4
 
     title = models.CharField("Concert Title", max_length=200)
     season = models.IntegerField(choices=Season.choices, default=Season.FALL) # Not confused with "Concert Season" like 2022-2023
@@ -67,8 +68,8 @@ class File(models.Model):
 class Performance(models.Model):
     """Performance date for a concert"""
 
-    concert = models.ForeignKey(Concert, on_delete=models.CASCADE)
-    performance_date = models.DateTimeField("Performance Date")
+    concert = models.ForeignKey(Concert, on_delete=models.CASCADE, related_name="performances")
+    performance_dt = models.DateTimeField("Date")
 
     def __str__(self):
-        return f"{self.performance_date}"
+        return f"{self.performance_dt}"
