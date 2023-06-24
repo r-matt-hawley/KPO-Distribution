@@ -6,10 +6,10 @@
 
 <div class="container d-flex justify-content-center mt-5" style="width: 50%;">
     <div class="col mt-5 text-center">
-        <h1 class="mb-5">Delete Song</h1>
+        <h1 class="mb-5">Delete Part</h1>
 
-        <p class="h5">Are you sure you want to delete the song:</p>
-        <h3 class="my-5">{{ song.title }}</h3>
+        <p class="h5">Are you sure you want to delete the part:</p>
+        <h3 class="my-5">{{ part.title }}</h3>
         <form action="" method="POST">
             {% csrf_token %}
             {% comment %} <input type="submit" value="Confirm">

@@ -21,7 +21,7 @@
                 <tbody>
                     {% for song in concert.songs.all  %}
                         <tr>
-                            <td><a href="{% url 'music:song_detail' song_pk=song.id concert_pk=concert.id%}">
+                            <td><a href="{% url 'music:song_detail' pk=song.id concert_pk=concert.id %}">
                             {{ song.title }}</a></td>
                         </tr>
                     {% endfor %}
