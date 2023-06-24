@@ -6,7 +6,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 from music.forms import FileForm
-from music.models import Concert, Song
+from music.models import Concert, Song, Part
 
 from icecream import ic
 
@@ -77,7 +77,7 @@ class SongBaseView(View):
 
     def get_success_url(self):
         return reverse("music:concert_detail", 
-                       kwargs={"pk":self.kwargs["pk"],
+                       kwargs={"song_pk":self.kwargs["song_pk"],
                                "concert_pk": self.kwargs["concert_pk"]})
 
 class SongListView(SongBaseView, ListView):
@@ -105,3 +105,29 @@ class SongUpdateView(SongBaseView, UpdateView):
 
 class SongDeleteView(SongBaseView, DeleteView):
     """View to delete a song."""
+
+
+class PartBaseView(View):
+    model = Part
+    fields = ["name"]
+    success_url = reverse_lazy("music:song_detail")
+
+class PartListView(PartBaseView, ListView):
+    """View to list all concerts.
+    Use the 'concert_list' variable in the template
+    to access all Concert objects."""
+
+class PartDetailView(PartBaseView, DetailView):
+    """View to list the details from one concert.
+    Use the 'concert' variable in the template to access
+    the specific concert here and in the Views below."""
+
+class PartCreateView(PartBaseView, CreateView):
+    """View to create a new concert."""
+
+class PartUpdateView(PartBaseView, UpdateView):
+    """View to update a concert."""
+
+class PartDeleteView(PartBaseView, DeleteView):
+    """View to delete a concert."""
+
