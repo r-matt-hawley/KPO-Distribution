@@ -1,5 +1,7 @@
+from typing import Any
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.forms import CharField, ModelForm, TextInput
 from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.views.generic.detail import DetailView
@@ -61,6 +63,12 @@ class ConcertDetailView(ConcertBaseView, DetailView):
     Use the 'concert' variable in the template to access
     the specific concert here and in the Views below."""
 
+    # def get_context_data(self, **kwargs):
+    #     ic(self.args)
+    #     ic(self.kwargs)
+    #     ic(kwargs)
+    #     return super().get_context_data(**kwargs)
+
 class ConcertCreateView(ConcertBaseView, CreateView):
     """View to create a new concert."""
 
@@ -76,9 +84,18 @@ class SongBaseView(View):
     fields = ["title", "concert"]
 
     def get_success_url(self):
+        """returns url for redirect after successful 
+        creation, deletion, or update of Song."""
+        ic(self.kwargs)
+        # if "concert_pk" in self.kwargs:
+        #     key = self.kwargs["concert_pk"]
+        # else:
+        #     ic("!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        #     ic("No concert_pk in self.kwargs")
+        #     ic("!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        #     key = self.kwargs["pk"]
         return reverse("music:concert_detail", 
-                       kwargs={"song_pk":self.kwargs["song_pk"],
-                               "concert_pk": self.kwargs["concert_pk"]})
+                        kwargs={"pk": self.kwargs["concert_pk"]})
 
 class SongListView(SongBaseView, ListView):
     """View to list all songs.
@@ -93,24 +110,56 @@ class SongDetailView(SongBaseView, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         concert = Concert.objects.get(id=self.kwargs["concert_pk"])
-        context["concert_key"] = concert.pk
         context["concert_title"] = concert.title
+        context["concert_pk"] = concert.pk
         return context
 
 class SongCreateView(SongBaseView, CreateView):
     """View to create a new song."""
+    fields = ["title"]
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["concert_pk"] = self.kwargs["concert_pk"]
+        return context
+    
+    def form_valid( self, form):
+        song = form.save()
+        song.concert.set([self.kwargs["concert_pk"]])
+        song.save()
+        return HttpResponseRedirect( self.get_success_url())
+    
+    def get_success_url(self):
+        return reverse_lazy("music:concert_detail", 
+                            kwargs={"pk": self.kwargs["concert_pk"]})
 
 class SongUpdateView(SongBaseView, UpdateView):
     """View to update a song."""
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["concert_pk"] = self.kwargs["concert_pk"]
+        return context
+
 class SongDeleteView(SongBaseView, DeleteView):
     """View to delete a song."""
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["concert_pk"] = self.kwargs["concert_pk"]
+        return context
 
 
 class PartBaseView(View):
     model = Part
     fields = ["name"]
-    success_url = reverse_lazy("music:song_detail")
+
+    def get_success_url(self):
+        return reverse("music:part_detail", 
+                        kwargs={"concert_pk": self.kwargs["concert_pk"],
+                                "song_pk": self.kwargs["song_pk"],
+                                "part_pk": self.kwargs["part_pk"]})
+
 
 class PartListView(PartBaseView, ListView):
     """View to list all concerts.
@@ -122,6 +171,15 @@ class PartDetailView(PartBaseView, DetailView):
     Use the 'concert' variable in the template to access
     the specific concert here and in the Views below."""
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        concert = Concert.objects.get(id=self.kwargs["concert_pk"])
+        context["concert_title"] = concert.title
+        context["concert_pk"] = concert.pk
+        song = Song.objects.get(id=self.kwargs["song_pk"])
+        context["song_title"] = song.title
+        context["song_pk"] = song.pk
+        return context
 class PartCreateView(PartBaseView, CreateView):
     """View to create a new concert."""
 
