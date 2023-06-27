@@ -48,7 +48,7 @@ class File(models.Model):
     """One page of a Part"""
 
     # We need to know what song and part this file is associated with
-    part = models.ForeignKey(Part, blank=True, null=True, on_delete=models.SET_NULL)
+    part = models.ForeignKey(Part, blank=True, null=True, on_delete=models.SET_NULL, related_name="files")
     song = models.ForeignKey(Song, blank=True, null=True, on_delete=models.CASCADE)
 
     # TODO: Complete tutorial on uploading pdf files
