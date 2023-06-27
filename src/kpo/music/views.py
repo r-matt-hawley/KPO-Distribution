@@ -121,11 +121,7 @@ class SongCreateView(SongBaseView, CreateView):
         song = form.save()
         song.concert.set([self.kwargs["concert_pk"]])
         song.save()
-        return HttpResponseRedirect(self.get_success_url())
-    
-    def get_success_url(self):
-        return reverse_lazy("music:concert_detail", 
-                            kwargs={"pk": self.kwargs["concert_pk"]})
+        return HttpResponseRedirect(super().get_success_url())
 
 class SongUpdateView(SongBaseView, UpdateView):
     """View to update a song."""
