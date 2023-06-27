@@ -63,12 +63,6 @@ class ConcertDetailView(ConcertBaseView, DetailView):
     Use the 'concert' variable in the template to access
     the specific concert here and in the Views below."""
 
-    # def get_context_data(self, **kwargs):
-    #     ic(self.args)
-    #     ic(self.kwargs)
-    #     ic(kwargs)
-    #     return super().get_context_data(**kwargs)
-
 class ConcertCreateView(ConcertBaseView, CreateView):
     """View to create a new concert."""
 
@@ -155,6 +149,8 @@ class PartBaseView(View):
     fields = ["name"]
 
     def get_success_url(self):
+        """returns url for redirect after successful 
+        creation, deletion, or update of Song."""
         return reverse("music:part_detail", 
                         kwargs={"concert_pk": self.kwargs["concert_pk"],
                                 "song_pk": self.kwargs["song_pk"],
@@ -162,14 +158,14 @@ class PartBaseView(View):
 
 
 class PartListView(PartBaseView, ListView):
-    """View to list all concerts.
-    Use the 'concert_list' variable in the template
-    to access all Concert objects."""
+    """View to list all parts.
+    Use the 'part_list' variable in the template
+    to access all Part objects."""
 
 class PartDetailView(PartBaseView, DetailView):
-    """View to list the details from one concert.
-    Use the 'concert' variable in the template to access
-    the specific concert here and in the Views below."""
+    """View to list the details of one part.
+    Use the 'part' variable in the template to access
+    the specific part here and in the Views below."""
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
