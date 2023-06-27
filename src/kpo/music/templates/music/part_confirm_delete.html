@@ -13,7 +13,7 @@
         <form action="" method="POST">
             {% csrf_token %}
             {% comment %} <input type="submit" value="Confirm">
-            <input type="submit" value="Cancel" onclick="window.location='{% url 'music:concert_detail' concert_pk=concert_key %}'; return false;"> {% endcomment %}
+            <input type="submit" value="Cancel" onclick="window.location='{% url 'music:concert_detail' pk=concert_key %}'; return false;"> {% endcomment %}
             <input type="submit" class="btn btn-primary btn-lg" value="Confirm" style="margin-right: 30px; margin-top: 30px;">
             <input type="submit" class="btn btn-danger btn-lg" style="margin-top: 30px;" onclick="window.location='{{list_all}}'; return false;" value="Cancel">
         </form>

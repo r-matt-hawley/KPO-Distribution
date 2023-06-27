@@ -158,7 +158,7 @@ class PartBaseView(View):
         return reverse("music:part_detail", 
                         kwargs={"concert_pk": self.kwargs["concert_pk"],
                                 "song_pk": self.kwargs["song_pk"],
-                                "part_pk": self.kwargs["part_pk"]})
+                                "part_pk": self.kwargs["pk"]})
 
 
 class PartListView(PartBaseView, ListView):
@@ -179,13 +179,19 @@ class PartDetailView(PartBaseView, DetailView):
         song = Song.objects.get(id=self.kwargs["song_pk"])
         context["song_title"] = song.title
         context["song_pk"] = song.pk
+        print(context["part"].files.all())
         return context
 class PartCreateView(PartBaseView, CreateView):
     """View to create a new concert."""
 
 class PartUpdateView(PartBaseView, UpdateView):
     """View to update a concert."""
-
+   
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["concert_pk"] = self.kwargs["concert_pk"]
+        context["song_pk"] = self.kwargs["song_pk"]
+        return context
 class PartDeleteView(PartBaseView, DeleteView):
     """View to delete a concert."""
 

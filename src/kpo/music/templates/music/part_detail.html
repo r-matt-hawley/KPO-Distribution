@@ -13,14 +13,16 @@
             <table class="table table-striped mt-5" style="width: 50%">
                 <thead>
                     <tr>
-                        <th scope="col">Parts</th>
+                        <th class="text-center" scope="col">File Name</th>
+                        <th class="text-center" scope="col">pdf</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for part in song.parts.all  %}
+                    {% for file in part.files.all %}
                         <tr>
                             <!-- TODO: Add Url to part_detail page -->
-                            <td>{{ part.name }}</td>
+                            <td>{{ file.file_name }}</td>
+                            <td><a href="/media/{{ file.pdf }}" target="_blank">{{ file.pdf }}</a></td>
                         </tr>
                     {% endfor %}
                         
@@ -29,7 +31,7 @@
         </div>
 
         <div class="d-flex justify-content-center">
-            <a href="{% url 'music:concert_detail' pk=concert_key %}" 
+            <a href="{% url 'music:song_detail' pk=song_pk concert_pk=concert_pk %}" 
             class="d-block btn btn-primary btn-lg my-5">BACK</a>
         </div>
     </div>
