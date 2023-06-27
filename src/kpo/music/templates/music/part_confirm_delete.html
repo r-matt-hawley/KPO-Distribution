@@ -12,10 +12,8 @@
         <h3 class="my-5">{{ part.title }}</h3>
         <form action="" method="POST">
             {% csrf_token %}
-            {% comment %} <input type="submit" value="Confirm">
-            <input type="submit" value="Cancel" onclick="window.location='{% url 'music:concert_detail' pk=concert_key %}'; return false;"> {% endcomment %}
             <input type="submit" class="btn btn-primary btn-lg" value="Confirm" style="margin-right: 30px; margin-top: 30px;">
-            <input type="submit" class="btn btn-danger btn-lg" style="margin-top: 30px;" onclick="window.location='{{list_all}}'; return false;" value="Cancel">
+            <input type="submit" class="btn btn-danger btn-lg" style="margin-top: 30px;" onclick="window.location='{% url 'music:song_detail' concert_pk=concert_pk pk=song_pk %}'; return false;" value="Cancel">
         </form>
     </div>
 </div>

@@ -121,7 +121,7 @@ class SongCreateView(SongBaseView, CreateView):
         song = form.save()
         song.concert.set([self.kwargs["concert_pk"]])
         song.save()
-        return HttpResponseRedirect( self.get_success_url())
+        return HttpResponseRedirect(self.get_success_url())
     
     def get_success_url(self):
         return reverse_lazy("music:concert_detail", 
@@ -151,10 +151,9 @@ class PartBaseView(View):
     def get_success_url(self):
         """returns url for redirect after successful 
         creation, deletion, or update of Song."""
-        return reverse("music:part_detail", 
+        return reverse("music:song_detail", 
                         kwargs={"concert_pk": self.kwargs["concert_pk"],
-                                "song_pk": self.kwargs["song_pk"],
-                                "part_pk": self.kwargs["pk"]})
+                                "pk": self.kwargs["song_pk"]})
 
 
 class PartListView(PartBaseView, ListView):
@@ -178,16 +177,34 @@ class PartDetailView(PartBaseView, DetailView):
         print(context["part"].files.all())
         return context
 class PartCreateView(PartBaseView, CreateView):
-    """View to create a new concert."""
+    """View to create a new part."""
+    # TODO: Also, add a file when creating a part.
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["concert_pk"] = self.kwargs["concert_pk"]
+        context["song_pk"] = self.kwargs["song_pk"]
+        return context
+    
+    def form_valid( self, form):
+        ic("saving part:", self.kwargs)
+        part = form.save()
+        part.songs.set([self.kwargs["song_pk"]])
+        part.save()
+        return HttpResponseRedirect(super().get_success_url())
 
 class PartUpdateView(PartBaseView, UpdateView):
-    """View to update a concert."""
-   
+    """View to update a part."""
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["concert_pk"] = self.kwargs["concert_pk"]
         context["song_pk"] = self.kwargs["song_pk"]
         return context
 class PartDeleteView(PartBaseView, DeleteView):
-    """View to delete a concert."""
-
+    """View to delete a part."""
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["concert_pk"] = self.kwargs["concert_pk"]
+        context["song_pk"] = self.kwargs["song_pk"]
+        return context

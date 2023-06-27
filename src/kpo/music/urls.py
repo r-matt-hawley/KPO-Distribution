@@ -41,7 +41,7 @@ urlpatterns = [
         views.SongDeleteView.as_view(), 
         name="song_delete"),
 
-    path("concerts/<int:concert_pk>/songs/<int:pk>/parts/create/", 
+    path("concerts/<int:concert_pk>/songs/<int:song_pk>/parts/create/", 
         views.PartCreateView.as_view(), 
         name="part_create"),
 
