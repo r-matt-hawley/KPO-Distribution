@@ -5,7 +5,7 @@ from . import views
 app_name = "music"
 
 urlpatterns = [
-    path("concerts", 
+    path("concerts/", 
         views.ConcertListView.as_view(), 
         name="concert_list"),
 
@@ -25,7 +25,7 @@ urlpatterns = [
         views.ConcertUpdateView.as_view(), 
         name="concert_update"),
 
-    path("concerts/<int:pk>/songs/create/",
+    path("concerts/<int:concert_pk>/songs/create/",
         views.SongCreateView.as_view(), 
         name="song_create"),
 
@@ -45,15 +45,15 @@ urlpatterns = [
         views.PartCreateView.as_view(), 
         name="part_create"),
 
-    path("concerts/<int:concert_pk>/songs/<int:song_pk>/parts/<int:pk/", 
+    path("concerts/<int:concert_pk>/songs/<int:song_pk>/parts/<int:pk>/", 
         views.PartDetailView.as_view(), 
         name="part_detail"),
 
-    path("concerts/<int:concert_pk>/songs/<int:song_pk>/parts/<int:pk/update/", 
+    path("concerts/<int:concert_pk>/songs/<int:song_pk>/parts/<int:pk>/update/", 
         views.PartUpdateView.as_view(), 
         name="part_update"),
 
-    path("concerts/<int:concert_pk>/songs/<int:song_pk>/parts/<int:pk/delete/", 
+    path("concerts/<int:concert_pk>/songs/<int:song_pk>/parts/<int:pk>/delete/", 
         views.PartDeleteView.as_view(), 
         name="part_delete"),
 

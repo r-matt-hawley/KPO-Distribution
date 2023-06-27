@@ -30,13 +30,13 @@
                 {% for concert in concert_list %}
                 <tr>
                     {% comment %} <th scope="row">{{forloop.counter}}</th> {% endcomment %}
-                    <td class="ml-5"><a href="{% url 'music:concert_detail' concert.id %}">{{concert.title}}</a></td>
+                    <td class="ml-5"><a href="{% url 'music:concert_detail' pk=concert.id %}">{{concert.title}}</a></td>
                     <td class="text-center">film.year</td>
                     <td class="text-center">film.length</td>
                     <td class="text-center">film.score | floatformat:2</td>
                     <td class="text-center">film.genre</td>
-                    <td><a href="{% url 'music:concert_update' concert.id %} ">Update</a></td>
-                    <td><a href="{% url 'music:concert_delete' concert.id %}">Delete</a></td>
+                    <td><a href="{% url 'music:concert_update' pk=concert.id %} ">Update</a></td>
+                    <td><a href="{% url 'music:concert_delete' pk=concert.id %}">Delete</a></td>
                 </tr>
             {% endfor %}
         

@@ -19,7 +19,8 @@
                     {% for part in song.parts.all  %}
                         <tr>
                             <!-- TODO: Add Url to part_detail page -->
-                            <td>{{ part.name }}</td>
+                            <td><a href="{% url 'music:part_detail' pk=part.id concert_pk=concert_pk song_pk=song.pk %}">
+                                {{ part.name }}</a></td>
                         </tr>
                     {% endfor %}
                         
@@ -28,7 +29,7 @@
         </div>
 
         <div class="d-flex justify-content-center">
-            <a href="{% url 'music:concert_detail' pk=concert_key %}" 
+            <a href="{% url 'music:concert_detail' pk=concert_pk %}" 
             class="d-block btn btn-primary btn-lg my-5">BACK</a>
         </div>
     </div>
