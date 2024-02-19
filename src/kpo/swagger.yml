@@ -1,0 +1,94 @@
+openapi: 3.0.0
+info:
+  title: "KPO Music Distribution REST API"
+  description: "An API used to distribute music to KPO members"
+  version: "1.0.0"
+
+servers:
+  - url: "/api"
+
+components:
+  schemas:
+    Concert:
+      type: "object"
+      required:
+        - id
+      properties:
+        id:
+          type: "integer" 
+        title:
+          type: "string"
+        season:
+          type: "string" # eventually int for enumerated values
+  parameters:
+    id:
+      name: "id"
+      description: "id of the concert to get"
+      in: path
+      required: True
+      schema:
+        type: "integer"
+
+paths:
+  /concerts:
+    get:
+      operationId: "concerts.read_all"
+      tags:
+        - "Concerts"
+      summary: "Read the list of concerts."
+      responses:
+        "200":
+          description: "Successfully read concert list."
+    post:
+      operationId: "concerts.create"
+      tags:
+        - Concerts
+      summary: "Create a concert"
+      requestBody:
+          description: "Concert to create"
+          required: True
+          x-body-name: "concert"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Concert"
+      responses:
+        "201":
+          description: "Successfully created concert"
+  /concert/{id}:
+    get:
+      operationId: "concerts.read_one"
+      tags:
+        - Concerts
+      summary: "Read one concert"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          description: "Successfully read concert"
+    put:
+      tags:
+        - Concerts 
+      operationId: "concerts.update"
+      summary: "Update a concert"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          description: "Successfully updated concert"
+      requestBody:
+        x-body-name: "concert"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Concert"
+    delete:
+      tags:
+        - Concerts
+      operationId: "concerts.delete"
+      summary: "Delete a concert"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "204":
+          description: "Successfully deleted concert"
