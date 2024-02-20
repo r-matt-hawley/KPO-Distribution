@@ -4,12 +4,9 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-flask = "*"
-connexion = {version = "*", extras = ["flask", "uvicorn"]}
+kpo-distribution = {editable = true, path = "."}
 
 [dev-packages]
-black = "*"
-isort = "*"
 
 [requires]
 python_version = "3.12"

@@ -1,10 +1,10 @@
 from pathlib import Path
 
-from connexion import FlaskApp
+from kpo_dist_api import config
 from flask import render_template
 
-app = FlaskApp(__name__, specification_dir="./")
-app.add_api("swagger.yml")
+app = config.connex_app
+app.add_api(config.basedir / "swagger.yml")
 
 
 @app.route("/")

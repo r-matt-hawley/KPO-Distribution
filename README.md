@@ -131,3 +131,8 @@ Need to store:
 - [Python Packaging User Guide](https://packaging.python.org/en/latest/tutorials/)
 - Admin toggles `is_published` to all view permissions for music from scanners to orchestra memebers.
 - Need notes fields for Concert, Song, and Part tables.
+
+### install dependencies
+- Flask
+- connexion[swagger-ui]
+- flask-marshmallow[sqlalchemy]
