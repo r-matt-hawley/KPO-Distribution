@@ -45,13 +45,13 @@ paths:
         - Concerts
       summary: "Create a concert"
       requestBody:
-          description: "Concert to create"
-          required: True
-          x-body-name: "concert"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Concert"
+        description: "Concert to create"
+        required: True
+        x-body-name: "concert"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Concert"
       responses:
         "201":
           description: "Successfully created concert"

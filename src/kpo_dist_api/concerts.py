@@ -22,7 +22,7 @@ def read_all():
 
 
 def read_one(id):
-    concert = concert.query.filter(Concert.id == id).one_or_none()
+    concert = Concert.query.filter(Concert.id == id).one_or_none()
 
     if concert is not None:
         return concert_schema.dump(concert)
