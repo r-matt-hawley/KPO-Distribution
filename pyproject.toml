@@ -7,4 +7,4 @@ description = "KPO Music Distribution web app"
 requires = ["setuptools"]
 
 [project.scripts]
-run_server = "run_server"
+run_server = "run_server:main"
