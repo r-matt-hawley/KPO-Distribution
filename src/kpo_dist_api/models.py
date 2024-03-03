@@ -26,6 +26,12 @@ concert_song = db.Table(
     db.Column("song_id", db.Integer, db.ForeignKey("song.id")),
 )
 
+song_part = db.Table(
+    "song_part",
+    db.Column("song_id", db.Integer, db.ForeignKey("song.id")),
+    db.Column("part_id", db.Integer, db.ForeignKey("part.id")),
+)
+
 # SQLAlchemy Models that map Python objects to SQL commands
 
 
@@ -53,6 +59,9 @@ class Song(db.Model):
     concerts: Mapped[list[Concert]] = db.relationship(
         secondary=concert_song, back_populates="songs"
     )
+    parts: Mapped[list[Part]] = db.relationship(
+        secondary=song_part, back_populates="songs"
+    )
     created = make_created_column
     modified = make_modified_column
 
@@ -68,6 +77,24 @@ class Song(db.Model):
         return item == self.title
 
 
+class Part(db.Model):
+    __tablename__ = "part"
+    id = db.mapped_column(db.Integer, primary_key=True)
+    name = db.mapped_column(db.String(32), unique=True)
+    songs: Mapped[list[Song]] = db.relationship(
+        secondary=song_part, back_populates="parts"
+    )
+
+    def __repr__(self):
+        return f'<Part "{self.name}">'
+
+    def __eq__(self, other):
+        print("-" * 10, "\nPart.__eq__ accessed\n", "-" * 10)
+        return isinstance(other, Part) and self.name == other.name
+
+    def __contains__(self, item):
+        print("-" * 10, "\nPart.__contains__ accessed\n", "-" * 10)
+        return item == self.name
 # Marshmallow schemas that (de)serialize data to/from the db
 
 
@@ -88,8 +115,22 @@ class SongSchema(ma.SQLAlchemyAutoSchema):
     concerts = fields.Nested(ConcertSchema, many=True)
 
 
+class PartSchema(ma.SQLAlchemyAutoSchema):
+    class meta:
+        model = Part
+        load_instance = True
+        sqla_session = db.session
+        include_fk = True
+
+    songs = fields.Nested(SongSchema, many=True)
+
+
+
+
 # Expose schemas to the other api files
 concert_schema = ConcertSchema()  # read_one, e.g.
 concerts_schema = ConcertSchema(many=True)  # read_all
 song_schema = SongSchema()
 songs_schema = SongSchema(many=True)
+part_schema = PartSchema()
+parts_schema = PartSchema(many=True)

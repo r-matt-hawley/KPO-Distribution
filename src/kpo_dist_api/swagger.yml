@@ -29,6 +29,15 @@ components:
           type: "integer" 
         title:
           type: "string"
+    Part:
+      type: "object"
+      required:
+        - id
+      properties:
+        id:
+          type: "integer" 
+        name:
+          type: "string"
   parameters:
     concert_id:
       name: "concert_id"
@@ -40,6 +49,13 @@ components:
     song_id:
       name: "song_id"
       description: "id of the song to get"
+      in: path
+      required: True
+      schema:
+        type: "integer"
+    part_id:
+      name: "part_id"
+      description: "id of the part to get"
       in: path
       required: True
       schema:
@@ -170,3 +186,65 @@ paths:
       responses:
         "204":
           description: "Successfully deleted song"
+  /parts:
+    get:
+      operationId: "parts.read_all"
+      tags:
+        - "Parts"
+      summary: "Read the list of parts."
+      responses:
+        "200":
+          description: "Successfully read part list."
+    post:
+      operationId: "parts.create"
+      tags:
+        - Parts
+      summary: "Create a part"
+      requestBody:
+        description: "Part to create"
+        required: True
+        x-body-name: "part"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Part"
+      responses:
+        "201":
+          description: "Successfully created part"
+  /part/{part_id}:
+    get:
+      operationId: "parts.read_one"
+      tags:
+        - Parts
+      summary: "Read one part"
+      parameters:
+        - $ref: "#/components/parameters/part_id"
+      responses:
+        "200":
+          description: "Successfully read part"
+    put:
+      tags:
+        - Parts 
+      operationId: "parts.update"
+      summary: "Update a part"
+      parameters:
+        - $ref: "#/components/parameters/part_id"
+      responses:
+        "200":
+          description: "Successfully updated part"
+      requestBody:
+        x-body-name: "part"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Part"
+    delete:
+      tags:
+        - Parts
+      operationId: "parts.delete"
+      summary: "Delete a part"
+      parameters:
+        - $ref: "#/components/parameters/part_id"
+      responses:
+        "204":
+          description: "Successfully deleted part"
