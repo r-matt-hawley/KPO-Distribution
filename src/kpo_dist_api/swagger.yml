@@ -20,10 +20,26 @@ components:
           type: "string"
         season:
           type: "string" # eventually int for enumerated values
+    Song:
+      type: "object"
+      required:
+        - id
+      properties:
+        id:
+          type: "integer" 
+        title:
+          type: "string"
   parameters:
-    id:
-      name: "id"
+    concert_id:
+      name: "concert_id"
       description: "id of the concert to get"
+      in: path
+      required: True
+      schema:
+        type: "integer"
+    song_id:
+      name: "song_id"
+      description: "id of the song to get"
       in: path
       required: True
       schema:
@@ -55,14 +71,14 @@ paths:
       responses:
         "201":
           description: "Successfully created concert"
-  /concert/{id}:
+  /concert/{concert_id}:
     get:
       operationId: "concerts.read_one"
       tags:
         - Concerts
       summary: "Read one concert"
       parameters:
-        - $ref: "#/components/parameters/id"
+        - $ref: "#/components/parameters/concert_id"
       responses:
         "200":
           description: "Successfully read concert"
@@ -72,7 +88,7 @@ paths:
       operationId: "concerts.update"
       summary: "Update a concert"
       parameters:
-        - $ref: "#/components/parameters/id"
+        - $ref: "#/components/parameters/concert_id"
       responses:
         "200":
           description: "Successfully updated concert"
@@ -88,7 +104,69 @@ paths:
       operationId: "concerts.delete"
       summary: "Delete a concert"
       parameters:
-        - $ref: "#/components/parameters/id"
+        - $ref: "#/components/parameters/concert_id"
       responses:
         "204":
           description: "Successfully deleted concert"
+  /songs:
+    get:
+      operationId: "songs.read_all"
+      tags:
+        - "Songs"
+      summary: "Read the list of songs."
+      responses:
+        "200":
+          description: "Successfully read song list."
+    post:
+      operationId: "songs.create"
+      tags:
+        - Songs
+      summary: "Create a song"
+      requestBody:
+        description: "Song to create"
+        required: True
+        x-body-name: "song"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Song"
+      responses:
+        "201":
+          description: "Successfully created song"
+  /song/{song_id}:
+    get:
+      operationId: "songs.read_one"
+      tags:
+        - Songs
+      summary: "Read one song"
+      parameters:
+        - $ref: "#/components/parameters/song_id"
+      responses:
+        "200":
+          description: "Successfully read song"
+    put:
+      tags:
+        - Songs 
+      operationId: "songs.update"
+      summary: "Update a song"
+      parameters:
+        - $ref: "#/components/parameters/song_id"
+      responses:
+        "200":
+          description: "Successfully updated song"
+      requestBody:
+        x-body-name: "song"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Song"
+    delete:
+      tags:
+        - Songs
+      operationId: "songs.delete"
+      summary: "Delete a song"
+      parameters:
+        - $ref: "#/components/parameters/song_id"
+      responses:
+        "204":
+          description: "Successfully deleted song"

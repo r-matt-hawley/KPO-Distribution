@@ -4,6 +4,7 @@ from kpo_dist_api import config
 from flask import render_template
 
 app = config.connex_app
+print("-"*10, "\n",config.basedir / "swagger.yml", "\n", "-"*10 )
 app.add_api(config.basedir / "swagger.yml")
 
 
