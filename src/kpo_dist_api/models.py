@@ -62,8 +62,8 @@ class Song(db.Model):
     parts: Mapped[list[Part]] = db.relationship(
         secondary=song_part, back_populates="songs"
     )
-    created = make_created_column
-    modified = make_modified_column
+    created = make_created_column()
+    modified = make_modified_column()
 
     def __repr__(self):
         return f'<Song "{self.title}">'
@@ -98,9 +98,9 @@ class Part(db.Model):
 # Marshmallow schemas that (de)serialize data to/from the db
 
 
-class ConcertSchema(ma.SQLAlchemyAutoSchema):
+class PartSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
-        model = Concert
+        model = Part
         load_instance = True
         sqla_session = db.session
 
@@ -112,12 +112,12 @@ class SongSchema(ma.SQLAlchemyAutoSchema):
         sqla_session = db.session
         include_fk = True
 
-    concerts = fields.Nested(ConcertSchema, many=True)
+    parts = fields.Nested(PartSchema, many=True)
 
 
-class PartSchema(ma.SQLAlchemyAutoSchema):
-    class meta:
-        model = Part
+class ConcertSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Concert
         load_instance = True
         sqla_session = db.session
         include_fk = True
