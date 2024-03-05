@@ -21,17 +21,17 @@ def read_all():
     return concerts_schema.dump(concerts)
 
 
-def read_one(id):
-    concert = Concert.query.filter(Concert.id == id).one_or_none()
+def read_one(concert_id):
+    concert = Concert.query.filter(Concert.id == concert_id).one_or_none()
 
     if concert is not None:
         return concert_schema.dump(concert)
     else:
-        abort(404, f"Concert with id {id} not found.")
+        abort(404, f"Concert with id {concert_id} not found.")
 
 
-def update(id, concert):
-    existing_concert = Concert.query.filter(Concert.id == id).one_or_none()
+def update(concert_id, concert):
+    existing_concert = Concert.query.filter(Concert.id == concert_id).one_or_none()
 
     if existing_concert:
         update_concert = concert_schema.load(concert, session=db.session)
@@ -41,15 +41,15 @@ def update(id, concert):
         db.session.commit()
         return concert_schema.dump(existing_concert)
     else:
-        abort(404, f"Concert with id {id} not found.")
+        abort(404, f"Concert with id {concert_id} not found.")
 
 
-def delete(id):
-    existing_concert = Concert.query.filter(Concert.id == id).one_or_none()
+def delete(concert_id):
+    existing_concert = Concert.query.filter(Concert.id == concert_id).one_or_none()
 
     if existing_concert:
         db.session.delete(existing_concert)
         db.session.commit()
-        return make_response(f"Concert with id {id} successfully deleted.")
+        return make_response(f"Concert with id {concert_id} successfully deleted.")
     else:
-        abort(404, f"Concert with id {id} not found.")
+        abort(404, f"Concert with id {concert_id} not found.")

@@ -21,17 +21,17 @@ def read_all():
     return songs_schema.dump(songs)
 
 
-def read_one(id):
-    song = Song.query.filter(Song.id == id).one_or_none()
+def read_one(song_id):
+    song = Song.query.filter(Song.id == song_id).one_or_none()
 
     if song is not None:
         return song_schema.dump(song)
     else:
-        abort(404, f"Song with id {id} not found.")
+        abort(404, f"Song with id {song_id} not found.")
 
 
-def update(id, song):
-    existing_song = Song.query.filter(Song.id == id).one_or_none()
+def update(song_id, song):
+    existing_song = Song.query.filter(Song.id == song_id).one_or_none()
 
     if existing_song:
         update_song = song_schema.load(song, session=db.session)
@@ -41,15 +41,15 @@ def update(id, song):
         db.session.commit()
         return song_schema.dump(existing_song)
     else:
-        abort(404, f"Song with id {id} not found.")
+        abort(404, f"Song with id {song_id} not found.")
 
 
-def delete(id):
-    existing_song = Song.query.filter(Song.id == id).one_or_none()
+def delete(song_id):
+    existing_song = Song.query.filter(Song.id == song_id).one_or_none()
 
     if existing_song:
         db.session.delete(existing_song)
         db.session.commit()
-        return make_response(f"Song with id {id} successfully deleted.")
+        return make_response(f"Song with id {song_id} successfully deleted.")
     else:
-        abort(404, f"Song with id {id} not found.")
+        abort(404, f"Song with id {song_id} not found.")
