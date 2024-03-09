@@ -32,11 +32,22 @@ song_part = db.Table(
     db.Column("part_id", db.Integer, db.ForeignKey("part.id")),
 )
 
+class File(db.Model):
+    """Association table for song_part. 
+    Includes pdf file containing the music for the given 
+    song and instrument part."""
+    __tablename__ = "file"
+    song_id: Mapped[int] = db.mapped_column(db.ForeignKey("song.id"), primary_key=True)
+    part_id: Mapped[int] = db.mapped_column(db.ForeignKey("part.id"), primary_key=True)
+    filename = db.Column(db.String(255), nullable=False)
+    file_url = db.Column(db.String(255), nullable=False)
+
+
+
 # SQLAlchemy Models that map Python objects to SQL commands
 
 
 class Concert(db.Model):
-    # TODO: Can title be the primary_key?
     __tablename__ = "concert"
     id = db.mapped_column(db.Integer, primary_key=True)
     title = db.mapped_column(db.String(32), unique=True)
@@ -52,7 +63,6 @@ class Concert(db.Model):
 
 
 class Song(db.Model):
-    # TODO: Add composer and arranger as primary_keys
     __tablename__ = "song"
     id = db.mapped_column(db.Integer, primary_key=True)
     title = db.mapped_column(db.String(32), unique=True)
@@ -96,7 +106,16 @@ class Part(db.Model):
         print("-" * 10, "\nPart.__contains__ accessed\n", "-" * 10)
         return item == self.name
 # Marshmallow schemas that (de)serialize data to/from the db
+# TODO: Create Base Schema that sets load_instance and sqla_session
+# See https://marshmallow-sqlalchemy.readthedocs.io/en/latest/recipes.html#base-schema-i
+# TODO: Specify fields tuple to improve security?
 
+class FileSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = File
+        load_instance = True
+        sqla_session = db.Session
+        include_fk = True
 
 class PartSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
@@ -134,3 +153,5 @@ song_schema = SongSchema()
 songs_schema = SongSchema(many=True)
 part_schema = PartSchema()
 parts_schema = PartSchema(many=True)
+file_schema = FileSchema()
+files_schema = FileSchema(many=True)
