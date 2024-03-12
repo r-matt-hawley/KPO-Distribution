@@ -1,11 +1,13 @@
 from pathlib import Path
 
-from kpo_dist_api import config
 from flask import render_template
 
-app = config.connex_app
-print("-"*10, "\n",config.basedir / "swagger.yml", "\n", "-"*10 )
-app.add_api(config.basedir / "swagger.yml")
+from kpo_dist_api import config
+# from kpo_dist_api.concerts import ConcertsResource
+
+app = config.app
+
+# config.api.add_resource(ConcertsResource)
 
 
 @app.route("/")
@@ -15,4 +17,4 @@ def home():
 
 if __name__ == "__main__":
     # app.run(f"{Path(__file__).stem}:app", host="0.0.0.0", port=8000)
-    app.run(host="0.0.0.0", port=8000)
+    app.run(host="0.0.0.0", port=8000, debug=True)
